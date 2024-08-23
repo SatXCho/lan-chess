@@ -100,14 +100,20 @@ while running:
             overlay.fill((0, 0, 0))  # Black overlay
             chessboard_surface.blit(overlay, (0, 0))
 
-            # Prepare the game over text
-            font = pygame.font.Font(None, 64)
+            # Prepare the "Game Over" text
+            large_font = pygame.font.Font(None, 128)  # Larger font for "Game Over"
+            small_font = pygame.font.Font(None, 64)   # Smaller font for "Color wins"
+
+            game_over_text = large_font.render("Game Over", True, (255, 255, 255))
+            game_over_rect = game_over_text.get_rect(center=(width // 2, height // 2 - 40))
+
             winner = "Black" if board.turn == chess.WHITE else "White"
-            text = font.render(f"Game Over, {winner} wins!", True, (255, 255, 255))
-            text_rect = text.get_rect(center=(width // 2, height // 2))
+            winner_text = small_font.render(f"{winner} wins!", True, (255, 255, 255))
+            winner_rect = winner_text.get_rect(center=(width // 2, height // 2 + 40))
 
             # Draw the text on the screen
-            chessboard_surface.blit(text, text_rect)
+            chessboard_surface.blit(game_over_text, game_over_rect)
+            chessboard_surface.blit(winner_text, winner_rect)
             pygame.display.flip()
 
             # Wait for the user to close the window
