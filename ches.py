@@ -93,7 +93,31 @@ while running:
                                 king_col = chess.square_file(king_square)
                                 king_row = 7 - chess.square_rank(king_square)
                                 pygame.draw.rect(chessboard_surface, CHECK, (king_col * square_size, king_row * square_size, square_size, square_size), 4)
-    
+
+        if board.is_checkmate():
+            overlay = pygame.Surface((width, height))
+            overlay.set_alpha(180)  # Adjust alpha for transparency
+            overlay.fill((0, 0, 0))  # Black overlay
+            chessboard_surface.blit(overlay, (0, 0))
+
+            # Prepare the game over text
+            font = pygame.font.Font(None, 64)
+            winner = "Black" if board.turn == chess.WHITE else "White"
+            text = font.render(f"Game Over, {winner} wins!", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(width // 2, height // 2))
+
+            # Draw the text on the screen
+            chessboard_surface.blit(text, text_rect)
+            pygame.display.flip()
+
+            # Wait for the user to close the window
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        waiting = False
+                        running = False
+            
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_u:
